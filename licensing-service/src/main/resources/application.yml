@@ -1,1 +1,10 @@
+server:
+  port: 8081
 
+licensing-service:
+  comment: embedded default comment
+
+logging:
+  level:
+    ROOT: INFO
+    org.springframework.cloud.config: trace

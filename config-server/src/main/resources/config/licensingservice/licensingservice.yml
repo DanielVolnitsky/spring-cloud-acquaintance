@@ -1,2 +1,2 @@
-tracer:
-  property: "I AM THE DEFAULT"
+licensing-service:
+  comment: Configuration Server default comment
