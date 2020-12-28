@@ -4,7 +4,16 @@ server:
 licensing-service:
   comment: embedded default comment
 
+eureka:
+  instance:
+    preferIpAddress: true
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+
 logging:
   level:
     ROOT: INFO
-    org.springframework.cloud.config: trace
+    org.springframework.cloud.config: debug
