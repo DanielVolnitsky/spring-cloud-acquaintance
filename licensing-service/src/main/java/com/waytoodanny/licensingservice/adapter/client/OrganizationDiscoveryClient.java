@@ -1,6 +1,7 @@
 package com.waytoodanny.licensingservice.adapter.client;
 
 import com.waytoodanny.licensingservice.domain.Organization;
+import com.waytoodanny.licensingservice.service.client.OrganizationServiceClient;
 import lombok.AllArgsConstructor;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
@@ -14,7 +15,7 @@ import java.util.Optional;
 
 @AllArgsConstructor
 @Component
-public class OrganizationDiscoveryClient {
+public class OrganizationDiscoveryClient implements OrganizationServiceClient {
 
   private final DiscoveryClient discoveryClient;
 

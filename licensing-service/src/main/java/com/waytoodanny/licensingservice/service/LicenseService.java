@@ -5,6 +5,7 @@ import com.waytoodanny.licensingservice.adapter.config.ServiceProperties;
 import com.waytoodanny.licensingservice.adapter.jpa.License;
 import com.waytoodanny.licensingservice.adapter.jpa.LicenseRepository;
 import com.waytoodanny.licensingservice.domain.Organization;
+import com.waytoodanny.licensingservice.service.client.OrganizationServiceClient;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -19,7 +20,8 @@ import java.util.UUID;
 public class LicenseService {
 
   private final LicenseRepository licenseRepository;
-  private final OrganizationDiscoveryClient organizationClient;
+  private final OrganizationServiceClient organizationDiscoveryClient;
+  private final OrganizationServiceClient organizationRestClient;
   private final ServiceProperties properties;
 
   public License license(String organizationId, String licenseId) {
@@ -63,17 +65,16 @@ public class LicenseService {
     switch (clientType) {
       case "discovery":
         log.info("Fetching organization info via discovery client");
-        return organizationClient.organization(organizationId);
+        return organizationDiscoveryClient.organization(organizationId);
+      case "rest":
+        log.info("Fetching organization info via load balanced rest template");
+        return organizationRestClient.organization(organizationId);
       //      case "feign":
 //        System.out.println("I am using the feign client");
 //        organization = organizationFeignClient.getOrganization(organizationId);
 //        break;
-//      case "rest":
-//        System.out.println("I am using the rest client");
-//        organization = organizationRestClient.getOrganization(organizationId);
-//        break;
       default:
-        return Optional.empty();
+        return organizationRestClient.organization(organizationId);
     }
   }
 }
