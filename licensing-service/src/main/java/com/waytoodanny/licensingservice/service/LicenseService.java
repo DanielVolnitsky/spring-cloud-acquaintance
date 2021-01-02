@@ -1,6 +1,5 @@
 package com.waytoodanny.licensingservice.service;
 
-import com.waytoodanny.licensingservice.adapter.client.OrganizationDiscoveryClient;
 import com.waytoodanny.licensingservice.adapter.config.ServiceProperties;
 import com.waytoodanny.licensingservice.adapter.jpa.License;
 import com.waytoodanny.licensingservice.adapter.jpa.LicenseRepository;
@@ -22,10 +21,11 @@ public class LicenseService {
   private final LicenseRepository licenseRepository;
   private final OrganizationServiceClient organizationDiscoveryClient;
   private final OrganizationServiceClient organizationRestClient;
+  private final OrganizationServiceClient organizationFeignClient;
   private final ServiceProperties properties;
 
   public License license(String organizationId, String licenseId) {
-    return licenseRepository.findByOrganizationIdAndLicenseId(organizationId, licenseId)
+    return licenseRepository.findByOrganizationIdAndId(organizationId, licenseId)
         .orElse(new License())
         .setComment(properties.getComment());
   }
@@ -43,7 +43,7 @@ public class LicenseService {
                                    String licenseId,
                                    String clientType) {
     Optional<License> licenseMaybe =
-        licenseRepository.findByOrganizationIdAndLicenseId(organizationId, licenseId);
+        licenseRepository.findByOrganizationIdAndId(organizationId, licenseId);
 
     Optional<Organization> organizationMaybe =
         organization(organizationId, clientType);
@@ -69,10 +69,9 @@ public class LicenseService {
       case "rest":
         log.info("Fetching organization info via load balanced rest template");
         return organizationRestClient.organization(organizationId);
-      //      case "feign":
-//        System.out.println("I am using the feign client");
-//        organization = organizationFeignClient.getOrganization(organizationId);
-//        break;
+      case "feign":
+        log.info("Fetching organization info via feign");
+        return organizationFeignClient.organization(organizationId);
       default:
         return organizationRestClient.organization(organizationId);
     }
