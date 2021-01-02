@@ -4,16 +4,26 @@ server:
 licensing-service:
   comment: embedded default comment
 
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: password
+  h2:
+    console:
+      enabled: true
+      path: /h2
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create-drop
+
 eureka:
   instance:
     preferIpAddress: true
   client:
-    registerWithEureka: true
-    fetchRegistry: true
+    registerWithEureka: false
+    fetchRegistry: false
     serviceUrl:
       defaultZone: http://localhost:8761/eureka/
-
-logging:
-  level:
-    ROOT: INFO
-    org.springframework.cloud.config: debug

@@ -20,27 +20,10 @@ import javax.persistence.Transient;
 public class License {
 
   @Id
-  @Column(name = "license_id", nullable = false)
-  private String licenseId;
+  private String id;
 
   @Column(name = "organization_id", nullable = false)
   private String organizationId;
-
-  @Transient
-  @With
-  private String organizationName = "";
-
-  @Transient
-  @With
-  private String contactName = "";
-
-  @Transient
-  @With
-  private String contactPhone = "";
-
-  @Transient
-  @With
-  private String contactEmail = "";
 
   @Column(name = "product_name", nullable = false)
   private String productName;
@@ -57,4 +40,20 @@ public class License {
   @Column(name = "comment")
   @With
   private String comment;
+
+  @Transient
+  @With
+  private String organizationName = "";
+
+  @Transient
+  @With
+  private String contactName = "";
+
+  @Transient
+  @With
+  private String contactPhone = "";
+
+  @Transient
+  @With
+  private String contactEmail = "";
 }
