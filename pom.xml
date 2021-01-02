@@ -76,5 +76,7 @@
     <modules>
         <module>config-server</module>
         <module>licensing-service</module>
+        <module>organization-service</module>
+        <module>service-discovery-eureka</module>
     </modules>
 </project>
