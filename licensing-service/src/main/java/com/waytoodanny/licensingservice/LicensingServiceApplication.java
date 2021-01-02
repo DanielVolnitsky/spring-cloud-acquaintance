@@ -5,9 +5,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @SpringBootApplication
 @EnableDiscoveryClient // to enable the application to use the DiscoveryClient and Ribbon libraries
+@EnableFeignClients
 @EnableConfigurationProperties(ServiceProperties.class)
 public class LicensingServiceApplication {
 
