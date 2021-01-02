@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/v1/organizations/{organizationId}/licenses")
 @AllArgsConstructor
@@ -18,6 +20,15 @@ public class OrganizationLicenseController {
   @GetMapping(value = "/{licenseId}")
   public License organizationLicense(@PathVariable("organizationId") String organizationId,
                                      @PathVariable("licenseId") String licenseId) {
+
     return licenseService.license(organizationId, licenseId);
+  }
+
+  @GetMapping(value = "/{licenseId}/{clientType}")
+  public Optional<License> getLicenseViaSpecificClient(@PathVariable("organizationId") String organizationId,
+                                                       @PathVariable("licenseId") String licenseId,
+                                                       @PathVariable("clientType") String clientType) {
+
+    return licenseService.licence(organizationId, licenseId, clientType);
   }
 }
