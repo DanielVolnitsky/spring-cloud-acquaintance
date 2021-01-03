@@ -46,4 +46,9 @@ public class OrganizationDiscoveryClient implements OrganizationServiceClient {
 
     return Optional.ofNullable(response.getBody());
   }
+
+  @Override
+  public Type type() {
+    return Type.DISCOVERY;
+  }
 }

@@ -5,7 +5,7 @@ eureka:
   client:
     # not to register with a Eureka service when the Spring Boot Eureka application starts because this is the Eureka service
     registerWithEureka: false
-    # so that when the Eureka service starts, it doesn’t try to cache its registry information locally
+    # so that when the Eureka service starts, it doesn't try to cache its registry information locally
     fetchRegistry: false
   server:
     waitTimeInMsWhenSyncEmpty: 5

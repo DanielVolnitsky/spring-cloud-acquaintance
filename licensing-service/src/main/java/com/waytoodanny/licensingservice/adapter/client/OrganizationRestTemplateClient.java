@@ -24,4 +24,9 @@ public class OrganizationRestTemplateClient implements OrganizationServiceClient
 
     return Optional.ofNullable(restResponse.getBody());
   }
+
+  @Override
+  public Type type() {
+    return Type.REST;
+  }
 }

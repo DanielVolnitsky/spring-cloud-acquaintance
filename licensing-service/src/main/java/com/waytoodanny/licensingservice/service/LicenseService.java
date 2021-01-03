@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -19,9 +20,7 @@ import java.util.UUID;
 public class LicenseService {
 
   private final LicenseRepository licenseRepository;
-  private final OrganizationServiceClient organizationDiscoveryClient;
-  private final OrganizationServiceClient organizationRestClient;
-  private final OrganizationServiceClient organizationFeignClient;
+  private final Map<OrganizationServiceClient.Type, OrganizationServiceClient> organizationServicesByType;
   private final ServiceProperties properties;
 
   public License license(String organizationId, String licenseId) {
@@ -41,12 +40,12 @@ public class LicenseService {
 
   public Optional<License> licence(String organizationId,
                                    String licenseId,
-                                   String clientType) {
+                                   OrganizationServiceClient.Type clientType) {
     Optional<License> licenseMaybe =
         licenseRepository.findByOrganizationIdAndId(organizationId, licenseId);
 
-    Optional<Organization> organizationMaybe =
-        organization(organizationId, clientType);
+    OrganizationServiceClient client = organizationServicesByType.get(clientType);
+    Optional<Organization> organizationMaybe = client.organization(organizationId);
 
     return licenseMaybe
         .map(license ->
@@ -59,21 +58,5 @@ public class LicenseService {
                     .withComment(properties.getComment())
             ).orElse(license)
         );
-  }
-
-  private Optional<Organization> organization(String organizationId, String clientType) {
-    switch (clientType) {
-      case "discovery":
-        log.info("Fetching organization info via discovery client");
-        return organizationDiscoveryClient.organization(organizationId);
-      case "rest":
-        log.info("Fetching organization info via load balanced rest template");
-        return organizationRestClient.organization(organizationId);
-      case "feign":
-        log.info("Fetching organization info via feign");
-        return organizationFeignClient.organization(organizationId);
-      default:
-        return organizationRestClient.organization(organizationId);
-    }
   }
 }

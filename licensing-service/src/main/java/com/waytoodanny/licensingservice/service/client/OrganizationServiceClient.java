@@ -7,4 +7,10 @@ import java.util.Optional;
 public interface OrganizationServiceClient {
 
   Optional<Organization> organization(String organizationId);
+
+  Type type();
+
+  enum Type {
+    DISCOVERY, REST, FEIGN
+  }
 }

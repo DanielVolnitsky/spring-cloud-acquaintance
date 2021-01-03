@@ -17,10 +17,6 @@ spring:
       ddl-auto: create-drop
 
 eureka:
-  instance:
-    preferIpAddress: true
   client:
     registerWithEureka: false
     fetchRegistry: false
-    serviceUrl:
-      defaultZone: http://localhost:8761/eureka/
