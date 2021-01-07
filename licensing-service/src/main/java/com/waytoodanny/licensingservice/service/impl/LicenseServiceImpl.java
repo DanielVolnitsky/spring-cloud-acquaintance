@@ -1,23 +1,22 @@
-package com.waytoodanny.licensingservice.service;
+package com.waytoodanny.licensingservice.service.impl;
 
 import com.waytoodanny.licensingservice.adapter.config.ServiceProperties;
 import com.waytoodanny.licensingservice.adapter.jpa.License;
 import com.waytoodanny.licensingservice.adapter.jpa.LicenseRepository;
 import com.waytoodanny.licensingservice.domain.Organization;
+import com.waytoodanny.licensingservice.service.LicenceService;
 import com.waytoodanny.licensingservice.service.client.OrganizationServiceClient;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
-@Service
 @AllArgsConstructor
 @Slf4j
-public class LicenseService {
+public class LicenseServiceImpl implements LicenceService {
 
   private final LicenseRepository licenseRepository;
   private final Map<OrganizationServiceClient.Type, OrganizationServiceClient> organizationServicesByType;

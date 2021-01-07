@@ -1,7 +1,7 @@
 package com.waytoodanny.licensingservice.adapter.rest;
 
 import com.waytoodanny.licensingservice.adapter.jpa.License;
-import com.waytoodanny.licensingservice.service.LicenseService;
+import com.waytoodanny.licensingservice.service.LicenceService;
 import com.waytoodanny.licensingservice.service.client.OrganizationServiceClient;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,14 +16,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class OrganizationLicenseController {
 
-  private final LicenseService licenseService;
-
-  @GetMapping(value = "/{licenseId}")
-  public License organizationLicense(@PathVariable("organizationId") String organizationId,
-                                     @PathVariable("licenseId") String licenseId) {
-
-    return licenseService.license(organizationId, licenseId);
-  }
+  private final LicenceService licenseService;
 
   @GetMapping(value = "/{licenseId}/{clientType}")
   public Optional<License> getLicenseViaSpecificClient(@PathVariable("organizationId") String organizationId,
