@@ -6,9 +6,8 @@ import com.waytoodanny.licensingservice.service.LicenceService;
 import com.waytoodanny.licensingservice.service.client.OrganizationServiceClient;
 import com.waytoodanny.licensingservice.service.impl.CircuitBreakerWrapped;
 import com.waytoodanny.licensingservice.service.impl.LicenseServiceImpl;
-import io.github.resilience4j.circuitbreaker.CircuitBreaker;
+import io.github.resilience4j.circuitbreaker.CircuitBreakerRegistry;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -47,11 +46,11 @@ public class ServiceConfig {
   licenceService(LicenseRepository licenseRepository,
                  Map<OrganizationServiceClient.Type, OrganizationServiceClient> organizationServicesByType,
                  ServiceProperties serviceProperties,
-                 CircuitBreakerFactory<?, ?> circuitBreakerFactory) {
+                 CircuitBreakerRegistry circuitBreakerRegistry) {
 
     return new CircuitBreakerWrapped(
         new LicenseServiceImpl(licenseRepository, organizationServicesByType, serviceProperties),
-        circuitBreakerFactory.create("licenceService")
+        circuitBreakerRegistry.circuitBreaker("licenseService")
     );
   }
 }

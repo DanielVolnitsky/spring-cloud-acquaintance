@@ -3,9 +3,9 @@ package com.waytoodanny.licensingservice.service.impl;
 import com.waytoodanny.licensingservice.adapter.jpa.License;
 import com.waytoodanny.licensingservice.service.LicenceService;
 import com.waytoodanny.licensingservice.service.client.OrganizationServiceClient;
+import io.github.resilience4j.circuitbreaker.CircuitBreaker;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cloud.client.circuitbreaker.CircuitBreaker;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,18 +20,15 @@ public class CircuitBreakerWrapped implements LicenceService {
   @Override
   public List<License> organizationLicenses(String organizationId) {
     log.debug("Wrapping method call into circuit breaker");
-    return circuitBreaker.run(
-        () -> delegate.organizationLicenses(organizationId)
-    );
+    return CircuitBreaker.decorateSupplier(
+        circuitBreaker, () -> delegate.organizationLicenses(organizationId)
+    ).get();
   }
 
   @Override
   public void save(License license) {
     log.debug("Wrapping method call into circuit breaker");
-    circuitBreaker.run(() -> {
-      delegate.save(license);
-      return null;
-    });
+    circuitBreaker.decorateRunnable(() -> delegate.save(license)).run();
   }
 
   @Override
@@ -39,8 +36,8 @@ public class CircuitBreakerWrapped implements LicenceService {
                                    String licenseId,
                                    OrganizationServiceClient.Type clientType) {
     log.debug("Wrapping method call into circuit breaker");
-    return circuitBreaker.run(
-        () -> delegate.licence(organizationId, licenseId, clientType)
-    );
+    return CircuitBreaker.decorateSupplier(
+        circuitBreaker, () -> delegate.licence(organizationId, licenseId, clientType)
+    ).get();
   }
 }
