@@ -78,5 +78,6 @@
         <module>licensing-service</module>
         <module>organization-service</module>
         <module>service-discovery-eureka</module>
+        <module>gateway-zuul</module>
     </modules>
 </project>
